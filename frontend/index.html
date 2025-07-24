@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xanadu Link Creator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    input, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+      min-height: 80px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Xanadu Idea Linker</h1>
+
+  <input id="idea1" type="text" placeholder="Enter first idea" />
+  <input id="idea2" type="text" placeholder="Enter second idea" />
+  <button id="linkBtn">Create Link</button>
+
+  <div id="result"></div>
+
+  <script>
+    const btn = document.getElementById('linkBtn');
+    const idea1Input = document.getElementById('idea1');
+    const idea2Input = document.getElementById('idea2');
+    const resultDiv = document.getElementById('result');
+
+    btn.addEventListener('click', async () => {
+      const idea1 = idea1Input.value.trim();
+      const idea2 = idea2Input.value.trim();
+
+      if (!idea1 || !idea2) {
+        resultDiv.textContent = 'Please enter both ideas.';
+        return;
+      }
+
+      try {
+        const response = await fetch('http://localhost:3000/api/link', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idea1, idea2 })
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          resultDiv.textContent = 'Error: ' + (error.message || response.statusText);
+          return;
+        }
+
+        const data = await response.json();
+        resultDiv.textContent = JSON.stringify(data, null, 2);
+
+        // Clear inputs on success
+        idea1Input.value = '';
+        idea2Input.value = '';
+
+      } catch (err) {
+        resultDiv.textContent = 'Fetch error: ' + err.message;
+      }
+    });
+  </script>
+
+</body>
+</html>

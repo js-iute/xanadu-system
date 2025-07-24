@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Xanadu Interactive Ideas</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+    h1 {
+      text-align: center;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      background: #f9f9f9;
+      margin: 6px 0;
+      padding: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      position: relative;
+    }
+    .idea-name {
+      font-weight: bold;
+      color: #007acc;
+    }
+    .popup {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 10px;
+      background: white;
+      border: 1px solid #ddd;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 10px;
+      border-radius: 5px;
+      width: 300px;
+      z-index: 100;
+    }
+    .popup.visible {
+      display: block;
+    }
+    .links {
+      margin-top: 6px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Interactive Xanadu Ideas</h1>
+  <button id="refreshBtn">Refresh List</button>
+  <ul id="ideasList"></ul>
+
+  <script>
+    const ideasList = document.getElementById('ideasList');
+    const refreshBtn = document.getElementById('refreshBtn');
+
+    let ideasData = {};
+
+    async function fetchIdeas() {
+      try {
+        const response = await fetch('http://localhost:3000/api/ideas');
+        if (!response.ok) throw new Error('Failed to fetch ideas');
+        ideasData = await response.json();
+
+        ideasList.innerHTML = ''; // clear previous
+
+        if (Object.keys(ideasData).length === 0) {
+          ideasList.innerHTML = '<li>No ideas found. Try creating some!</li>';
+          return;
+        }
+
+        for (const idea in ideasData) {
+          const li = document.createElement('li');
+          li.classList.add('idea-item');
+
+          li.innerHTML = `
+            <div class="idea-name">${idea}</div>
+            <div class="popup">
+              <div><strong>Links:</strong></div>
+              <div class="links">${ideasData[idea].links.length ? ideasData[idea].links.join(', ') : 'No links'}</div>
+            </div>
+          `;
+
+          li.addEventListener('click', (e) => {
+            e.stopPropagation();
+            // Close other popups
+            document.querySelectorAll('.popup.visible').forEach(popup => popup.classList.remove('visible'));
+            // Toggle this popup
+            const popup = li.querySelector('.popup');
+            popup.classList.toggle('visible');
+          });
+
+          ideasList.appendChild(li);
+        }
+      } catch (err) {
+        ideasList.innerHTML = `<li>Error: ${err.message}</li>`;
+      }
+    }
+
+    // Close popups when clicking outside
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.popup.visible').forEach(popup => popup.classList.remove('visible'));
+    });
+
+    refreshBtn.addEventListener('click', fetchIdeas);
+
+    // Auto-load on page open
+    fetchIdeas();
+  </script>
+</body>
+</html>
