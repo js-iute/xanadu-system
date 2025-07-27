@@ -1,0 +1,55 @@
+body {
+  font-family: 'Georgia', serif;
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1rem;
+  line-height: 1.6;
+  background-color: #fefefe;
+  color: #222;
+}
+
+article {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+}
+
+a.xanadu-link {
+  color: inherit; /* normal text color */
+  text-decoration: none; /* no underline */
+  background-color: transparent;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+a.xanadu-link:hover,
+a.xanadu-link:focus {
+  background-color: #fff176; /* light yellow highlight */
+  outline: none;
+}
+
+.popup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  width: 280px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  border-radius: 8px;
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,38 +1,62 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const fs = require('fs');
+const cors = require('cors');
+const path = require('path');
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'frontend')));
 
-const ideas = {};
+// Load existing data or create empty object
+let ideas = {};
+const dataFile = path.join(__dirname, 'data.json');
 
-app.post("/api/link", (req, res) => {
-  const { idea1, idea2 } = req.body;
-
-  if (!idea1 || !idea2) {
-    return res.status(400).json({ message: "Missing ideas" });
+if (fs.existsSync(dataFile)) {
+  try {
+    const rawData = fs.readFileSync(dataFile);
+    ideas = JSON.parse(rawData);
+  } catch (err) {
+    console.error('Error reading data.json:', err);
+    ideas = {};
   }
+} else {
+  fs.writeFileSync(dataFile, JSON.stringify(ideas, null, 2));
+}
 
-  if (!ideas[idea1]) ideas[idea1] = { links: [] };
-  if (!ideas[idea2]) ideas[idea2] = { links: [] };
-
-  if (!ideas[idea1].links.includes(idea2)) {
-    ideas[idea1].links.push(idea2);
-  }
-  if (!ideas[idea2].links.includes(idea1)) {
-    ideas[idea2].links.push(idea1);
-  }
-
-  res.json({ message: "Link created", ideas });
-});
-
-app.get("/api/ideas", (req, res) => {
+// GET all ideas
+app.get('/api/ideas', (req, res) => {
   res.json(ideas);
 });
 
+// POST new idea
+app.post('/api/idea', (req, res) => {
+  const { name, links } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: 'Idea name is required' });
+  }
+
+  ideas[name] = {
+    links: links || []
+  };
+
+  try {
+    fs.writeFileSync(dataFile, JSON.stringify(ideas, null, 2));
+    res.json({ status: 'saved', idea: ideas[name] });
+  } catch (err) {
+    console.error('Error writing to data.json:', err);
+    res.status(500).json({ error: 'Failed to save idea' });
+  }
+});
+
+// Fallback for unknown routes
+app.use((req, res) => {
+  res.status(404).send('Not found');
+});
+
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Create New Idea</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fefefe;
+      padding: 2rem;
+      color: #111;
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    input, textarea, button {
+      font-size: 1rem;
+      padding: 0.5rem;
+      margin-top: 0.5rem;
+      width: 100%;
+      max-width: 500px;
+      display: block;
+    }
+
+    label {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      background: #444;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #000;
+    }
+
+    .message {
+      margin-top: 1rem;
+      color: green;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Create a New Idea</h2>
+
+  <label for="name">Idea Name:</label>
+  <input type="text" id="name" placeholder="e.g., Mind" />
+
+  <label for="links">Links (comma-separated):</label>
+  <input type="text" id="links" placeholder="e.g., Brain, Body, Code" />
+
+  <button id="submit">Save Idea</button>
+
+  <div class="message" id="message"></div>
+
+  <script>
+    document.getElementById("submit").addEventListener("click", async () => {
+      const name = document.getElementById("name").value.trim();
+      const linksRaw = document.getElementById("links").value.trim();
+      const links = linksRaw ? linksRaw.split(',').map(s => s.trim()) : [];
+
+      if (!name) {
+        alert("Please enter an idea name.");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:3000/api/idea", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ name, links })
+        });
+
+        if (res.ok) {
+          document.getElementById("message").textContent = `✅ Saved "${name}" successfully!`;
+          document.getElementById("name").value = '';
+          document.getElementById("links").value = '';
+        } else {
+          document.getElementById("message").textContent = `❌ Failed to save idea.`;
+        }
+      } catch (err) {
+        document.getElementById("message").textContent = `❌ Error saving idea.`;
+      }
+    });
+  </script>
+
+</body>
+</html>
