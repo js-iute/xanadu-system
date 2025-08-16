@@ -1,144 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Xanadu Concept Web</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f4f4f9;
-      margin: 0;
-      padding: 2rem;
-      color: #333;
-    }
-
-    h1 {
-      text-align: center;
-      color: #222;
-    }
-
-    .form-section {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      max-width: 500px;
-      margin: 0 auto 2rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    }
-
-    input {
-      padding: 0.5rem;
-      margin: 0.5rem 0;
-      width: 100%;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    button {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 0.6rem 1.2rem;
-      border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 1rem;
-    }
-
-    button:hover {
-      background: #357abd;
-    }
-
-    .idea-list {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .idea {
-      background: white;
-      border-left: 5px solid #4a90e2;
-      padding: 1rem;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    .linked {
-      color: #4a90e2;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .linked:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Create Idea</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <h1>Create New Idea</h1>
+  <form id="ideaForm">
+    <input type="text" id="title" placeholder="Title" required><br><br>
+    <textarea id="content" placeholder="Content" required></textarea><br><br>
+    <label>Select links (optional):</label><br>
+    <select id="links" multiple></select><br><br>
+    <button type="submit">Create Idea</button>
+  </form>
+  <p id="status"></p>
 
-  <h1>Xanadu Concept Linker</h1>
-
-  <div class="form-section">
-    <input type="text" id="idea1" placeholder="Enter first idea..." />
-    <input type="text" id="idea2" placeholder="Enter second idea..." />
-    <button onclick="createLink()">Create Link</button>
-  </div>
-
-  <div class="idea-list" id="ideaList">
-    <h2>All Ideas and Links</h2>
-    <button onclick="refreshList()">Refresh List</button>
-    <div id="ideas"></div>
-  </div>
-
-  <script>
-    async function createLink() {
-      const idea1 = document.getElementById("idea1").value.trim();
-      const idea2 = document.getElementById("idea2").value.trim();
-
-      if (!idea1 || !idea2) {
-        alert("Please enter both ideas");
-        return;
-      }
-
-      await fetch("http://localhost:3000/api/link", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ idea1, idea2 }),
-      });
-
-      refreshList();
-      document.getElementById("idea1").value = "";
-      document.getElementById("idea2").value = "";
-    }
-
-    async function refreshList() {
-      const res = await fetch("http://localhost:3000/api/ideas");
-      const data = await res.json();
-
-      const container = document.getElementById("ideas");
-      container.innerHTML = "";
-
-      if (Object.keys(data).length === 0) {
-        container.innerHTML = "<p>No ideas found. Try creating some!</p>";
-        return;
-      }
-
-      for (const [idea, info] of Object.entries(data)) {
-        const div = document.createElement("div");
-        div.className = "idea";
-
-        const linksHTML = info.links.map(link => `<span class="linked">${link}</span>`).join(", ");
-
-        div.innerHTML = `<strong>${idea}</strong><br/>Links: ${linksHTML}`;
-        container.appendChild(div);
-      }
-    }
-
-    // Initial load
-    refreshList();
-  </script>
-
+  <script src="index.js"></script>
 </body>
 </html>

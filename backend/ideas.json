@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Brain",
+    "content": "The brain controls the nervous system.",
+    "links": []
+  },
+  {
+    "id": 2,
+    "title": "Neuron",
+    "content": "Neurons send signals to the brain.",
+    "links": [
+      1
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Ghost",
+    "content": "Brain and Neuron and interconnected",
+    "links": [
+      4
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Scary",
+    "content": "Ghost are scary, nah.",
+    "links": [
+      3
+    ]
+  }
+]

@@ -1,24 +1,32 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const links = document.querySelectorAll(".xanadu-link");
-  const popup = document.getElementById("popup");
+async function loadIdeas() {
+  try {
+    const res = await fetch("http://localhost:6227/api/ideas");
+    const ideas = await res.json();
+    const contentDiv = document.getElementById("content");
+    contentDiv.innerHTML = "";
 
-  links.forEach(link => {
-    link.addEventListener("mouseenter", async (e) => {
-      const idea = link.dataset.idea;
-      const res = await fetch(`http://localhost:3000/api/get/${idea}`);
-      const data = await res.json();
+    ideas.forEach(idea => {
+      const p = document.createElement("p");
+      p.innerHTML = idea.content;
 
-      if (data.content) {
-        popup.innerHTML = `<strong>${idea}</strong><br>${data.content}`;
-        popup.style.display = "block";
-        const rect = link.getBoundingClientRect();
-        popup.style.top = `${rect.bottom + window.scrollY + 5}px`;
-        popup.style.left = `${rect.left + window.scrollX}px`;
-      }
+      idea.links.forEach(linkId => {
+        const linkedIdea = ideas.find(i => i.id === linkId);
+        if (!linkedIdea) return;
+
+        const regex = new RegExp(`(${linkedIdea.title})`, "gi");
+        p.innerHTML = p.innerHTML.replace(regex, `
+          <span class="highlight">$1
+            <span class="popup">${linkedIdea.content}</span>
+          </span>
+        `);
+      });
+
+      contentDiv.appendChild(p);
     });
+  } catch (err) {
+    document.getElementById("content").textContent = "Failed to load ideas.";
+    console.error(err);
+  }
+}
 
-    link.addEventListener("mouseleave", () => {
-      popup.style.display = "none";
-    });
-  });
-});
+window.addEventListener("DOMContentLoaded", loadIdeas);

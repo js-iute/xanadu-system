@@ -1,108 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Xanadu Viewer</title>
-  <style>
-    body {
-      background-color: #ffffff;
-      color: #1a1a1a;
-      font-family: Georgia, 'Times New Roman', serif;
-      padding: 2rem;
-      line-height: 1.6;
-    }
-
-    .linked {
-      background-color: yellow;
-      cursor: pointer;
-      padding: 0 2px;
-      transition: background-color 0.3s;
-    }
-
-    .popup {
-      position: absolute;
-      background-color: #f8f8f8;
-      border: 1px solid #ccc;
-      padding: 1rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      max-width: 300px;
-      z-index: 999;
-      border-radius: 8px;
-      font-size: 0.95rem;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>All Ideas</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Xanadu Viewer</h1>
-  <div id="content">
-    Mind and Brain are deeply connected. Code and Program build each other.
-  </div>
+  <h1>All Ideas</h1>
+  <div id="content">Loading...</div>
 
-  <script>
-    const contentEl = document.getElementById('content');
-    let ideas = {};
-    let popup = null;
-
-    fetch('/api/ideas')
-      .then(res => res.json())
-      .then(data => {
-        ideas = data;
-        renderLinks();
-      })
-      .catch(err => {
-        console.error("Fetch failed:", err);
-        contentEl.innerHTML += "<p style='color:red;'>Error: could not fetch data</p>";
-      });
-
-    function renderLinks() {
-      const text = contentEl.textContent;
-      contentEl.innerHTML = "";
-
-      const words = text.split(/\s+/);
-      words.forEach((word, i) => {
-        if (ideas[word]) {
-          const span = document.createElement("span");
-          span.classList.add("linked");
-          span.textContent = word;
-          span.addEventListener("click", (e) => showPopup(e, word));
-          contentEl.appendChild(span);
-        } else {
-          contentEl.appendChild(document.createTextNode(word));
-        }
-        contentEl.appendChild(document.createTextNode(" "));
-      });
-    }
-
-    function showPopup(e, word) {
-      removePopup();
-      const popupEl = document.createElement("div");
-      popupEl.className = "popup";
-      popupEl.innerHTML = `<strong>${word}</strong><br>Links to: ${ideas[word].links.join(", ")}`;
-      document.body.appendChild(popupEl);
-
-      const rect = e.target.getBoundingClientRect();
-      popupEl.style.top = `${rect.bottom + window.scrollY + 5}px`;
-      popupEl.style.left = `${rect.left + window.scrollX}px`;
-
-      popup = popupEl;
-      setTimeout(() => {
-        document.addEventListener("click", hidePopupOutside, { once: true });
-      }, 0);
-    }
-
-    function hidePopupOutside(e) {
-      if (!popup.contains(e.target)) {
-        removePopup();
-      }
-    }
-
-    function removePopup() {
-      if (popup) {
-        popup.remove();
-        popup = null;
-      }
-    }
-  </script>
+  <script src="viewer.js"></script>
 </body>
 </html>

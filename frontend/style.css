@@ -1,55 +1,62 @@
 body {
-  font-family: 'Georgia', serif;
-  max-width: 700px;
-  margin: 2rem auto;
-  padding: 1rem;
-  line-height: 1.6;
-  background-color: #fefefe;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
   color: #222;
+  padding: 20px;
 }
 
-article {
-  background: #fff;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+h1 { margin-bottom: 20px; }
+
+textarea, input, select {
+  width: 300px;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-a.xanadu-link {
-  color: inherit; /* normal text color */
-  text-decoration: none; /* no underline */
-  background-color: transparent;
+button {
+  padding: 8px 15px;
+  background-color: #f5d300;
+  border: none;
   cursor: pointer;
-  border-radius: 3px;
-  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.2s;
 }
 
-a.xanadu-link:hover,
-a.xanadu-link:focus {
-  background-color: #fff176; /* light yellow highlight */
-  outline: none;
+button:hover {
+  background-color: #e0c700;
+}
+
+.highlight {
+  background-color: #fff176; /* softer yellow */
+  cursor: pointer;
+  position: relative;
+  border-radius: 3px;
+  padding: 0 2px; /* remove extra space to the right */
 }
 
 .popup {
-  position: absolute;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  width: 280px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  z-index: 9999;
-  border-radius: 8px;
   display: none;
-  animation: fadeIn 0.3s ease-in-out;
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #f5d300;
+  padding: 10px;
+  border-radius: 8px;
+  top: 1.8rem;
+  left: 0;
+  min-width: 180px;
+  z-index: 100;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  transition: opacity 0.2s, transform 0.2s;
+  opacity: 0;
+  transform: translateY(-5px);
 }
 
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.highlight:hover .popup {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
 }

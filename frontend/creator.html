@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Create New Idea</title>
   <style>
     body {
@@ -61,6 +61,9 @@
   <label for="links">Links (comma-separated):</label>
   <input type="text" id="links" placeholder="e.g., Brain, Body, Code" />
 
+  <label for="content">Idea Content / Description:</label>
+  <textarea id="content" rows="4" placeholder="Write a short description or notes about this idea..."></textarea>
+
   <button id="submit">Save Idea</button>
 
   <div class="message" id="message"></div>
@@ -69,6 +72,7 @@
     document.getElementById("submit").addEventListener("click", async () => {
       const name = document.getElementById("name").value.trim();
       const linksRaw = document.getElementById("links").value.trim();
+      const content = document.getElementById("content").value.trim();
       const links = linksRaw ? linksRaw.split(',').map(s => s.trim()) : [];
 
       if (!name) {
@@ -82,13 +86,14 @@
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ name, links })
+          body: JSON.stringify({ name, links, content })
         });
 
         if (res.ok) {
           document.getElementById("message").textContent = `✅ Saved "${name}" successfully!`;
           document.getElementById("name").value = '';
           document.getElementById("links").value = '';
+          document.getElementById("content").value = '';
         } else {
           document.getElementById("message").textContent = `❌ Failed to save idea.`;
         }
