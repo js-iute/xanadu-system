@@ -1,38 +1,26 @@
-async function loadLinkOptions() {
-  const res = await fetch("http://localhost:6227/api/ideas");
-  const ideas = await res.json();
-  const select = document.getElementById("links");
-  select.innerHTML = "";
+const createBtn = document.getElementById("createIdeaBtn");
+const status = document.getElementById("status");
 
-  ideas.forEach(idea => {
-    const option = document.createElement("option");
-    option.value = idea.id;
-    option.textContent = idea.title;
-    select.appendChild(option);
-  });
-}
+createBtn.addEventListener("click", async () => {
+  const id = document.getElementById("ideaId").value.trim();
+  const title = document.getElementById("ideaTitle").value.trim();
+  const content = document.getElementById("ideaContent").value.trim();
+  const links = document.getElementById("ideaLinks").value
+    .split(",")
+    .map((l) => l.trim())
+    .filter((l) => l !== "");
 
-document.getElementById("ideaForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const title = document.getElementById("title").value.trim();
-  const content = document.getElementById("content").value.trim();
-  const select = document.getElementById("links");
-  const linkIds = Array.from(select.selectedOptions).map(opt => parseInt(opt.value));
+  if (!id || !title || !content) {
+    status.textContent = "All fields required!";
+    return;
+  }
 
-  const res = await fetch("http://localhost:6227/api/ideas", {
+  const res = await fetch("/api/idea", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ title, content, linkIds })
+    body: JSON.stringify({ id, title, content, links })
   });
 
-  if (res.ok) {
-    document.getElementById("status").textContent = "Created!";
-    document.getElementById("title").value = "";
-    document.getElementById("content").value = "";
-    await loadLinkOptions();
-  } else {
-    document.getElementById("status").textContent = "Failed to create idea.";
-  }
+  const data = await res.json();
+  status.textContent = data.message;
 });
-
-loadLinkOptions();

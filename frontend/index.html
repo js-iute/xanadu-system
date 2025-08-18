@@ -6,14 +6,12 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Create New Idea</h1>
-  <form id="ideaForm">
-    <input type="text" id="title" placeholder="Title" required><br><br>
-    <textarea id="content" placeholder="Content" required></textarea><br><br>
-    <label>Select links (optional):</label><br>
-    <select id="links" multiple></select><br><br>
-    <button type="submit">Create Idea</button>
-  </form>
+  <h1>Create Idea</h1>
+  <input type="text" id="ideaId" placeholder="ID">
+  <input type="text" id="ideaTitle" placeholder="Title">
+  <textarea id="ideaContent" placeholder="Content"></textarea>
+  <input type="text" id="ideaLinks" placeholder="Linked IDs (comma-separated)">
+  <button id="createIdeaBtn">Create Idea</button>
   <p id="status"></p>
 
   <script src="index.js"></script>
