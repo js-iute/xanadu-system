@@ -1,32 +1,112 @@
+/* General reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Body styling */
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #ffffff; /* White background for modern look */
-  color: #333;
-  padding: 20px;
+    background-color: #ffffff; /* clean white background */
+    color: #222;
+    line-height: 1.6;
+    padding: 20px;
 }
 
-.idea {
-  border-bottom: 1px solid #ddd;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+/* Headings */
+h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
+/* Idea input container */
+#idea-form {
+    max-width: 600px;
+    margin: 0 auto 30px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.05);
+}
+
+/* Input fields */
+#idea-form input[type="text"],
+#idea-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #ffcc00; /* yellow theme */
+    color: #222;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+    background-color: #e6b800;
+}
+
+/* Status message */
+#status {
+    margin-top: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Idea list */
+#ideas-list {
+    max-width: 600px;
+    margin: 0 auto;
+    list-style: none;
+    padding-left: 0;
+}
+
+#ideas-list li {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 6px;
+    background-color: #fffbea;
+    cursor: default;
+    transition: all 0.2s ease-in-out;
+}
+
+#ideas-list li:hover {
+    background-color: #fff3cc;
+}
+
+/* Viewer page highlights */
 .highlight {
-  background-color: #fff59d; /* softer yellow */
-  cursor: pointer;
-  padding: 0 2px; /* small padding, no extra space */
-  border-radius: 3px;
+    background-color: #fff176; /* lighter yellow */
+    cursor: pointer;
+    border-radius: 3px;
 }
 
-#popup {
-  position: absolute;
-  background: #fefefe;
-  border: 1px solid #ccc;
-  padding: 8px 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-  display: none;
-  z-index: 9999;
-  max-width: 250px;
-  font-size: 14px;
-  border-radius: 6px;
+/* Popup styling */
+.popup {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+    max-width: 300px;
+}
+
+.popup.show {
+    display: block;
 }

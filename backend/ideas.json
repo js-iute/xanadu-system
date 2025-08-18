@@ -1,41 +1,51 @@
 [
   {
-    "id": "1",
+    "id": 1,
     "title": "Brain",
-    "content": "It works sadly",
+    "content": "The brain controls the body.",
     "links": []
   },
   {
-    "id": "2",
-    "title": "Car",
-    "content": "Brain does use car right.",
+    "id": 2,
+    "title": "Mind",
+    "content": "The mind controls thought and can relate to Brain.",
     "links": [
-      "1"
+      1
     ]
   },
   {
-    "id": "3",
-    "title": "asd",
-    "content": "Brain dfassa",
+    "id": 3,
+    "title": "Mclaren",
+    "content": "Mind matters in the race.",
     "links": [
-      "1"
+      2
     ]
   },
   {
-    "id": "4",
-    "title": "asd",
-    "content": "Brain dfassa",
+    "id": 4,
+    "title": "Kimi",
+    "content": "Mclaren and Mind are one tobe your mind.",
     "links": [
-      "2"
+      2,
+      3
     ]
   },
   {
-    "id": "5",
-    "title": "mueheeehe",
-    "content": "Brain and Car",
+    "id": 5,
+    "title": "repeat",
+    "content": "Mind Mind Mind and Mclaren Mclaren",
     "links": [
-      "1",
-      "2"
+      2,
+      3
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Ghost",
+    "content": "Mclaren and Brain",
+    "links": [
+      1,
+      3
     ]
   }
 ]
